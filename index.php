@@ -31,8 +31,6 @@ $end = $start+$end;
 $end = min($fileCount, $end);
 $search = isset($_GET["search"])?$_GET["search"]:"";
 
-// 10.253
-
 for ($i=$start; $i < $end && $i < $fileCount; $i++){
 
     $fName=$files[$i];
@@ -105,12 +103,12 @@ $next_url = 'index.php?';
 <html>
     <head>
         <meta charset="utf-8">
-        <title>Packet browser</title>
+        <title>Package browser</title>
         <script src="js/sc.js"></script>
 	<link rel="stylesheet" href="css/style.css" />
     </head>
     <body>
-    <h1><a href="/">Packet browser</a></h1>
+    <h1><a href="/">Package browser</a></h1>
     <img class="logga" src="img/logga.jpg"/>
     <h3>Välj det paket du vill granska</h3>
     <div class="search">

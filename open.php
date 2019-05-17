@@ -24,6 +24,11 @@
     // echo $command;
     $output = shell_exec($command);
     $size = strlen($output);
+
+    $mimetype = $_GET['type'];
+    if ($mimetype == "application/msword") {
+      $mimetype = "text";
+    }
     // echo $size;
     // echo 'Content-type: '. $_GET['type'];
     // echo 'Content-Disposition: inline; filename='.end(explode('/', $fileName));
@@ -32,7 +37,7 @@
     header("Expires: 0");
     header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
     header("Cache-Control: private", false); // required for certain browsers
-    header('Content-type: '. $_GET['type']);
+    header('Content-type: '. $mimetype);
     header('Content-Disposition: inline; filename='.end(explode('/', $fileName)));
     header('Content-Transfer-Encoding: binary');
     header('Content-Length: '.$size);

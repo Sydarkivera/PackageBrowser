@@ -2,12 +2,14 @@
 
 include 'settings.php';
 
+$date_format = "h:i:s";
+
 //var for storing uuid globaly
 $uuid = "";
 //Function for obtaining the mets.xml file inside the innermost .tar
 function getMetsFile($path)
 {
-    global $uuid;
+    global $uuid, $date_format;
     $path = substr($path, 0, strlen($path)-1);
 
     $result = "<p style='display: none' id='path'>".$path."</p>";
@@ -25,17 +27,21 @@ function getMetsFile($path)
     $output = [];
     $command = "";
 
-    if (PACKAGE_TYPE == "SIP") {
-        $command = "tarExtractor " . $path . " " . $uuid . "/mets.xml";
-    } else { // $Package_type == "AIP"
-        $command = "tarExtractor " . $path . " " . $uuid . "/content/".$uuid.".tar/".$uuid."/mets.xml";
-    }
+    // start by testing if the package contains an inner mets.xml file
+    $command = "tarExtractor " . $path . " " . $uuid . "/content/".$uuid.".tar/".$uuid."/mets.xml";
     // echo $command;
     exec($command, $output);
 
     if (count($output) <= 0) {
-        return false;
+        // return false;
+        // instead of just returning, try to find an outer tar file.
+        $command = "tarExtractor " . $path . " " . $uuid . "/mets.xml";
+        exec($command, $output);
+        if (count($output) <= 0) {
+          return false;
+        }
     }
+    // echo "after tar extractor: ".date($date_format)."</br>";
     //load mets.xml
     $xml = new DOMDocument;
     $xml->loadXML(implode($output));
@@ -58,6 +64,7 @@ function getMetsFile($path)
     $proc->setParameter('', 'url', 'sip.php?SIP='.$_GET['SIP'].$folder.$incS);
     $proc->importStyleSheet($xsl);
     $result .= $proc->transformToXML($xml);
+    // echo "after XSLT mets: ".date($date_format)."</br>";
     //load premis.xml
     $output = [];
     $command = "";
@@ -74,6 +81,7 @@ function getMetsFile($path)
     $proc = new XSLTProcessor;
     $proc->importStyleSheet($xsl);
     $result .= $proc->transformToXML($xml);
+    // echo "after XSLT premis: ".date($date_format)."</br>";
     return $result;
 }
 

@@ -40,7 +40,7 @@
     <table border="1">
       <tr bgcolor="#9acd32">
         <th style="text-align:left">ESSArch namn</th>
-        <th style="text-align:left">FGS Paket namen</th>
+        <th style="text-align:left">FGS Paket elementnamn</th>
         <th style="text-align:left">Värde</th>
         <th style="text-align:left">XSLT sökväg till elementet</th>
       </tr>
